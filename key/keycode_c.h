@@ -30,16 +30,26 @@ MMKeyCode keyCodeForChar(const char c) {
 			for (i = 0; i < 128; ++i) {
 				CFStringRef string = createStringForKey((CGKeyCode)i);
 				if (string != NULL) {
-					CFDictionaryAddValue(charToCodeDict, string, (const void *)i);
+					// Create a CFNumber for the key code
+					CFNumberRef num = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &i);
+					if (num != NULL) {
+						CFDictionaryAddValue(charToCodeDict, string, num);
+						CFRelease(num);
+					}
 					CFRelease(string);
 				}
 			}
 		}
 
 		charStr = CFStringCreateWithCharacters(kCFAllocatorDefault, &character, 1);
-		/* Our values may be NULL (0), so we need to use this function. */
-		if (!CFDictionaryGetValueIfPresent(charToCodeDict, charStr, (const void **)&code)) {
+		CFNumberRef num = NULL;
+		/* Retrieve the key code as a CFNumber */
+		if (!CFDictionaryGetValueIfPresent(charToCodeDict, charStr, (const void **)&num)) {
 			code = UINT16_MAX; /* Error */
+		} else {
+			if (!CFNumberGetValue(num, kCFNumberSInt32Type, &code)) {
+				code = UINT16_MAX; /* Error */
+			}
 		}
 		CFRelease(charStr);
 
@@ -69,7 +79,6 @@ MMKeyCode keyCodeForChar(const char c) {
 			while (xs->name) {
 				if (c == xs->name) {
 					code = xs->code;
-					// 
 					break;
 				}
 				xs++;
