@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/go-vgo/robotgo/clipboard"
+	"github.com/bitfocusas/robotgo/clipboard"
 )
 
 func main() {

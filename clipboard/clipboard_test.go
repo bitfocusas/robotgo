@@ -10,7 +10,7 @@ package clipboard_test
 import (
 	"testing"
 
-	"github.com/go-vgo/robotgo/clipboard"
+	"github.com/bitfocusas/robotgo/clipboard"
 )
 
 func TestCopyAndPaste(t *testing.T) {
