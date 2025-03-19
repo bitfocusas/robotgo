@@ -1,3 +1,5 @@
+CFStringRef createStringForKey(CGKeyCode keyCode);
+
 #include "keycode.h"
 
 #if defined(IS_MACOSX)
